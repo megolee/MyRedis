@@ -8,12 +8,18 @@ redis_db_stage = [{'host':'10.157.24.45', 'port':6379},{'host':'10.157.24.46', '
 if sys.argv[1] == 'qa2':
 	target_redis = redis_db_qa2
 elif  sys.argv[1] == 'stage':
-	target_redis = redis_db_qa2
+	target_redis = redis_db_stage
 else:
 	print 'Bad argument!!!!!!!'
 	sys.exit(1)
 
-smscode = 'SOA:MYACCOUNT:SMSCODE:1001:'+sys.argv[2]
+if sys.argv[3].lower()=='r':
+	smscode = 'SOA:MYACCOUNT:SMSCODE:1001:'+sys.argv[2]
+elif sys.argv[3].lower()=='f':
+	smscode = 'SOA:MYACCOUNT:SMSCODE:1002:'+sys.argv[2]
+else:
+	print 'Bad argument!!!!!!!'
+	sys.exit(1)
 
 try:
 	redisconn = StrictRedisCluster(startup_nodes=target_redis)
